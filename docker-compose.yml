@@ -1,0 +1,43 @@
+services:
+  bot:
+    build: .
+    container_name: wardogs-monitor
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    ports:
+      # Web UI. Bound to localhost by default; set WEB_BIND=0.0.0.0 in .env to reach it from your LAN.
+      # (Docker bypasses host firewalls like ufw when publishing on 0.0.0.0 — never expose this to the internet.)
+      - "${WEB_BIND:-127.0.0.1}:${WEB_PORT:-8080}:${WEB_PORT:-8080}"
+
+  # Fake Wardogs RCON server for testing without a real game server.
+  # Start with:  docker compose --profile mock up
+  # Then in Discord:  /wd server add name:Mock host:mock port:7780 password:mock
+  mock:
+    build: .
+    container_name: wardogs-mock
+    profiles: ["mock"]
+    restart: unless-stopped
+    command: ["node", "mock/server.js"]
+    ports:
+      # Published on localhost so you can point http://rcon.wardogs.com at 127.0.0.1 / 7780 / mock
+      - "127.0.0.1:7780:7780"
+    environment:
+      MOCK_PORT: 7780
+      MOCK_PASSWORD: mock
+      MOCK_NAME: "Wardogs Mock Server [TEST-02]"
+
+  # Second mock: smaller (32 slots), different password.
+  #   /wd server add name:Mock2 host:mock2 port:7780 password:mock2
+  mock2:
+    build: .
+    container_name: wardogs-mock2
+    profiles: ["mock"]
+    restart: unless-stopped
+    command: ["node", "mock/server.js"]
+    environment:
+      MOCK_PORT: 7780
+      MOCK_PASSWORD: mock2
+      MOCK_NAME: "Wardogs Mock Server [US-TEST-03]"
+      MOCK_MAX_PLAYERS: 32

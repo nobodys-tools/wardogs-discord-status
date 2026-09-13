@@ -1,0 +1,20 @@
+{
+  "name": "wardogs-discord-status",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Discord bot that shows live + 24h Wardogs server stats via the RCON HTTP API",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/index.js",
+    "dev": "node --watch --disable-warning=ExperimentalWarning src/index.js",
+    "mock": "node mock/server.js",
+    "chart:test": "node src/chart-test.js"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "dependencies": {
+    "discord.js": "^14.27.0"
+  }
+}
