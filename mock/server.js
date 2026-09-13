@@ -277,4 +277,4 @@ async function handle(req, res) {
 
 http.createServer((req, res) => {
   handle(req, res).catch((err) => fail(res, 500, err.message));
-}).listen(PORT, "0.0.0.0", () => console.log(`mock wardogs rcon on :${PORT} (password: ${PASSWORD || "<none>"})`));
+}).listen(PORT, "0.0.0.0", () => console.log(`mock wardogs rcon on :${PORT}${PASSWORD ? "" : " (no password)"}`));

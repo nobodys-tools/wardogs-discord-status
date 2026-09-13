@@ -44,7 +44,8 @@ function clip(text, max) {
 }
 
 function escapeMd(text) {
-  return String(text).replace(/([*_`~|>\[\]])/g, "\\$1");
+  // Backslash first in the class so a trailing "\" in a name can't cancel the escape that follows it.
+  return String(text).replace(/([\\*_`~|>[\]])/g, "\\$1");
 }
 
 /**
