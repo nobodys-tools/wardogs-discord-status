@@ -27,13 +27,14 @@ input,select{background:#0f1115;color:#e7e9ee;border:1px solid #333a48;border-ra
 button{background:#b91c1c;color:#fff;border:0;border-radius:6px;padding:7px 12px;font:inherit;cursor:pointer}button.sec{background:#2a2f3a}
 form.inline{display:inline}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px 12px}label{display:block;color:#9aa3b5;font-size:12px}label input,label select{width:100%;margin-top:2px}
 .ok{color:#4ade80}.bad{color:#f87171}.muted{color:#9aa3b5}.msg{background:#1f2937;border-left:3px solid #b91c1c;padding:8px 12px;border-radius:6px;margin:0 0 14px}
+.act{display:flex;align-items:flex-end}.act button{height:34px}
 .toggles{display:flex;flex-wrap:wrap;gap:6px 14px;margin:6px 0}.toggles label{display:inline-flex;gap:4px;align-items:center;color:#e7e9ee}
 a{color:#93c5fd}
 `;
 
 function page(title, body, msg) {
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><style>${CSS}</style></head><body><main>
-<h1>Wardogs Monitor</h1><p class="muted">Bot config · <a href="/">servers &amp; panels</a></p>
+<h1>Wardogs Monitor</h1><p class="muted">Servers &amp; panels</p>
 ${msg ? `<div class="msg">${esc(msg)}</div>` : ""}${body}</main></body></html>`;
 }
 
@@ -57,7 +58,7 @@ function indexPage(msg) {
   <label>Password<input name="password" type="password" placeholder="(unchanged)"></label>
   <label>Connect ip:port<input name="connect" value="${esc(s.connect)}"></label>
   <label>Monitor bot token<input name="monitor_token" type="password" placeholder="${s.monitor_token ? "(set — leave blank to keep)" : "(none)"}"></label>
-  <label>&nbsp;<button>Save</button></label>
+  <div class="act"><button>Save</button></div>
 </form>
 <div style="margin-top:6px">${liveCell(s)}
   <form class="inline" method="post" action="/servers/${s.id}/delete" onsubmit="return confirm('Delete this server and its history?')"><button class="sec">Delete</button></form>
@@ -70,7 +71,7 @@ function indexPage(msg) {
   <label>Port<input name="port" type="number" required min="1" max="65535"></label>
   <label>Password<input name="password" type="password" required></label>
   <label>Connect ip:port<input name="connect"></label>
-  <label>&nbsp;<button>Add server</button></label>
+  <div class="act"><button>Add server</button></div>
 </form></div>`;
 
   const panelCards = panels.map((p) => {
@@ -99,7 +100,7 @@ function indexPage(msg) {
   <label>Guild id<input name="guild_id" required></label>
   <label>Channel id<input name="channel_id" required></label>
   <label>Title<input name="title" placeholder="${esc(PANEL_DEFAULTS.title)}"></label>
-  <label>&nbsp;<button>Create panel</button></label>
+  <div class="act"><button>Create panel</button></div>
 </form><p class="muted">Enable Developer Mode in Discord → right-click a channel → Copy ID. The bot must be able to view, send, embed and attach files in that channel. Or just run <code>/wd panel create</code> in Discord.</p></div>`;
 
   return page("Wardogs Monitor", `
